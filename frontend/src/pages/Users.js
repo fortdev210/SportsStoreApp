@@ -158,12 +158,14 @@ const Users = () => {
         setUsers(res1.data.results);    
     }
     ///---------------------------For remove---------------------------------////
+    
     const onRemove = async(id) => {
-        confirm(`Are you sure to remove user ${id}?`);
-        const res = await axios.delete(`/api/accounts/users/${id}/`, config);
-        const res1 = await axios.get('/api/accounts/users/?page=1', config);
-        setUsers(res1.data.results);  
-        setCount(res1.data.count);  
+        if(window.confirm("Are you sure to remove?")){
+            const res = await axios.delete(`/api/accounts/users/${id}/`, config);
+            const res1 = await axios.get('/api/accounts/users/?page=1', config);
+            setUsers(res1.data.results);  
+            setCount(res1.data.count);  
+        }
     }
     ////-------------------For admin----------------------//////
     let is_admin = (localStorage.getItem('is_admin')==='true')

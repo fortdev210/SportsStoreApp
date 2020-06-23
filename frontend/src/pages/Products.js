@@ -126,12 +126,14 @@ const Products = ({ category_id, category_list }) => {
     }
 
     //////--------Remove product--------------//////////
+    
     const onRemove = async(id) => {
-        confirm(`Are you sure to remove products ${id}?`);
-        const res = await axios.delete(`/api/products/${id}/`, config);
-        const res1 = await axios.get('/api/products/', config);
-        setProducts(res1.data.results);  
-        setCount(res1.data.count);  
+        if(window.confirm("Are you sure to remove?")){
+            const res = await axios.delete(`/api/products/${id}/`, config);
+            const res1 = await axios.get('/api/products/', config);
+            setProducts(res1.data.results);  
+            setCount(res1.data.count);  
+        }
     }
 
     //////--------Update product--------------//////////
