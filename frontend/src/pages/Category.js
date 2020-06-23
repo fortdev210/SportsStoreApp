@@ -18,7 +18,6 @@ const Category = ({update_category, set_category}) => {
     const fetchData = async() => {
         try {
             const res = await axios.get('/api/category/', config);
-            console.log(res)
             let pages = res.data.count;
             let all = []
             for (var i = 1; i < pages / 5 + 1; i++){
@@ -89,13 +88,16 @@ const Category = ({update_category, set_category}) => {
                 All
             </div>
             {
-                data.map(cat => {
-                    return (
-                        <div className={styles.category_item} key={cat.id} onClick={()=>set_category(cat.id)} >
-                            {cat.name}
-                        </div>
-                    )
-                })
+                data !== undefined?
+                    data.map(cat => {
+                        return (
+                            <div className={styles.category_item} key={cat.id} onClick={()=>set_category(cat.id)} >
+                                {cat.name}
+                            </div>
+                        )
+                    })
+                :
+                ""
             }
         </div>
     )

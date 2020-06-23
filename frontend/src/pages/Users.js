@@ -29,6 +29,7 @@ const Users = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     };
+    const [errorMessage, setErrorMessage] = useState("");
     const [is_staff, setIsStaff] = useState(false);
     const onCheckStaff = (e) => {setIsStaff(!is_staff)};
     const [formData, setFormData] = useState({
@@ -53,10 +54,15 @@ const Users = () => {
         else
         { 
             const res = await axios.post('/api/accounts/signup',body,config);
-            toggleModal(false);         
-            const res1 = await axios.get('/api/accounts/users', config);
-            setUsers(res1.data.results);
-            setCount(res1.data.count);
+            if ("success" in res.data){
+                toggleModal(false);         
+                const res1 = await axios.get('/api/accounts/users', config);
+                setUsers(res1.data.results);
+                setCount(res1.data.count); 
+            }
+            else{
+                setErrorMessage(res.data.error);
+            }   
         }
     }
     ///--------------- For pagination and display users-------------///
@@ -187,7 +193,7 @@ const Users = () => {
                 </MDBTableHead>
                 <MDBTableBody>
                     {
-                        users !== null?
+                        users !== undefined?
                         users.map(user => {
                             return (<tr>
                             <td>{user.id}</td>
@@ -253,6 +259,7 @@ const Users = () => {
             <MDBModal isOpen={toggle} toggle={toggleModal}>
                 <MDBModalHeader toggle={toggleModal}>Add New User</MDBModalHeader>
                 <MDBModalBody>
+                    <p><span>{errorMessage}</span></p>
                     <form>
                         <div className="grey-text">
                             <MDBInput

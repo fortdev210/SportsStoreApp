@@ -114,7 +114,7 @@ const Products = ({ category_id, category_list }) => {
 
     const onSave = async (e) => {
         e.preventDefault();
-        if (name===""|price===""|category===null|description===null){
+        if (name===""|price===null|category===null|description===null){
             alert("Field cant be empty")
         }
         const body = {
@@ -185,7 +185,7 @@ const Products = ({ category_id, category_list }) => {
             {
                     addToggle ?
                     <form>
-                        <MDBInput label="Product Name" name="name" value={name} onChange={e => onChange(e)} outline />
+                        <MDBInput label="Product Name" name="name" value={name} onChange={e => onChange(e)}  outline />
                         <MDBInput label="Price" name="price" value={price} onChange={e => onChange(e)} outline />
                         <select className="browser-default custom-select" name="category" value={category} onChange={e => onChange(e)}>
                             <option>Category</option>
@@ -216,7 +216,7 @@ const Products = ({ category_id, category_list }) => {
                 setActive={setActive}
             />
             {
-                products !== null?
+                products !== undefined?
                     products.map((product) => {
                         return (
                             <div>
