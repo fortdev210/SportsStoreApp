@@ -56,7 +56,7 @@ const Users = () => {
             const res = await axios.post('/api/accounts/signup',body,config);
             if ("success" in res.data){
                 toggleModal(false);         
-                const res1 = await axios.get('/api/accounts/users', config);
+                const res1 = await axios.get('/api/accounts/users/?page=1', config);
                 setUsers(res1.data.results);
                 setCount(res1.data.count); 
             }
@@ -72,22 +72,19 @@ const Users = () => {
     const [next, setNext] = useState('');
     const [active, setActive] = useState(1);
 
-    
+    const fetchData = async() => {
+        try {
+            const res = await axios.get('/api/accounts/users/?page=1', config);
+            setUsers(res.data.results);
+            setCount(res.data.count);
+            setPrevious(res.data.previous);
+            setNext(res.data.next);
+        }
+        catch (err) {
+        }
+    }
     useEffect(() => {
         window.scrollTo(0,0);
-        
-        const fetchData = async() => {
-            try {
-                const res = await axios.get('/api/accounts/users', config);
-                setUsers(res.data.results);
-                setCount(res.data.count);
-                setPrevious(res.data.previous);
-                setNext(res.data.next);
-            }
-            catch (err) {
-
-            }
-        }
         fetchData();
     },[])
     const previous_number = () => {
@@ -156,15 +153,15 @@ const Users = () => {
             "name": updateName, "email":updateEmail,"is_staff":staff
         }
         const res = await axios.put(`/api/accounts/users/${update}/`, body, config);
-        const res1 = await axios.get('/api/accounts/users', config);
+        const res1 = await axios.get('/api/accounts/users/?page=1', config);
         toggleUpdate(0);
         setUsers(res1.data.results);    
     }
     ///---------------------------For remove---------------------------------////
     const onRemove = async(id) => {
-        alert(`Are you sure to remove user ${id}?`);
+        confirm(`Are you sure to remove user ${id}?`);
         const res = await axios.delete(`/api/accounts/users/${id}/`, config);
-        const res1 = await axios.get('/api/accounts/users', config);
+        const res1 = await axios.get('/api/accounts/users/?page=1', config);
         setUsers(res1.data.results);  
         setCount(res1.data.count);  
     }

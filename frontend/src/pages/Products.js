@@ -29,36 +29,34 @@ const Products = ({ category_id, category_list }) => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     };
+    const fetchData = async () => {
+        try {
+            const res = await axios.get('/api/products/?page=1', config);
+            if (category_id === 0) {
+                setProducts(res.data.results);
+                setCount(res.data.count);
+                setPages(res.data.count)
+            }
+            else {
+                let all = []
+                for (let i = 1; i < (pages / 5 + 1); i++) {
+                    const res = await axios.get(`/api/products/?page=${i}`, config)
+                    all.push(res.data.results)
+                }
+                all = [].concat.apply([], all);
+                let filtered_products = all.filter(function (el) { return el.category === category_id })
+                setProducts(filtered_products);
+                setTotalProduct(all);
+                setCount(filtered_products.length);
+            }
+            setPrevious(res.data.previous);
+            setNext(res.data.next);
+        }
+        catch (err) {
+        }
+    }
     useEffect(() => {
         window.scrollTo(0, 0);
-
-        const fetchData = async () => {
-            try {
-                const res = await axios.get('/api/products', config);
-                if (category_id === 0) {
-                    setProducts(res.data.results);
-                    setCount(res.data.count);
-                    setPages(res.data.count)
-                }
-                else {
-                
-                    let all = []
-                    for (let i = 1; i < (pages / 5 + 1); i++) {
-                        const res = await axios.get(`/api/products/?page=${i}`, config)
-                        all.push(res.data.results)
-                    }
-                    all = [].concat.apply([], all);
-                    let filtered_products = all.filter(function (el) { return el.category === category_id })
-                    setProducts(filtered_products);
-                    setTotalProduct(all);
-                    setCount(filtered_products.length);
-                }
-                setPrevious(res.data.previous);
-                setNext(res.data.next);
-            }
-            catch (err) {
-            }
-        }
         fetchData();
     }, [category_id])
     const previous_number = () => {
@@ -129,7 +127,7 @@ const Products = ({ category_id, category_list }) => {
 
     //////--------Remove product--------------//////////
     const onRemove = async(id) => {
-        alert(`Are you sure to remove products ${id}?`);
+        confirm(`Are you sure to remove products ${id}?`);
         const res = await axios.delete(`/api/products/${id}/`, config);
         const res1 = await axios.get('/api/products/', config);
         setProducts(res1.data.results);  
@@ -173,7 +171,7 @@ const Products = ({ category_id, category_list }) => {
         const res = await axios.put(`/api/products/${editToggle}/`, body, config);
         
         setEditToggle(false);
-        const res1 = await axios.get(`/api/products/?page=${currentPage}`, config);
+        const res1 = await axios.get(`/api/products/?page=1`, config);
         setProducts(res1.data.results);
         setCount(res1.data.count);
     }
