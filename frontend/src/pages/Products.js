@@ -242,8 +242,8 @@ const Products = ({ category_id, category_list }) => {
                                     </MDBCard>
                                     :
                                         <form>
-                                            <MDBInput label="Product Name" outline value={update_name} name="update_name" onChange={onUpdateChange} />
-                                            <MDBInput label="Price" outline value={update_price} name="update_price" onChange={onUpdateChange} />
+                                            <MDBInput label="Product Name" outline value={update_name} name="update_name" onChange={onUpdateChange} required/>
+                                            <MDBInput label="Price" outline value={update_price} name="update_price" onChange={onUpdateChange} required/>
                                             <select className="browser-default custom-select" value={update_category} name="update_category" onChange={onUpdateChange}>
                                                 <option>Category</option>
                                                 {
@@ -254,7 +254,7 @@ const Products = ({ category_id, category_list }) => {
                                                     })
                                                 }
                                             </select>
-                                            <MDBInput type="textarea" label="Description" outline value={update_description} name="update_description" onChange={onUpdateChange}/>
+                                            <MDBInput type="textarea" label="Description" outline value={update_description} name="update_description" onChange={onUpdateChange} required/>
                                             <MDBRow className={styles.addrow}>
                                                 <MDBBtn color="warning" className={styles.editbtn} onClick={onUpdate}><MDBIcon far icon="save" /> Update</MDBBtn>
                                                 <MDBBtn color="danger" className={styles.editbtn} onClick={() => setEditToggle(0)}><MDBIcon icon="undo" /> Cancel</MDBBtn>
@@ -280,5 +280,4 @@ const mapStateToProps = (state) => {
         category_list: state.category.category_list
     }
 }
-
 export default connect(mapStateToProps, null)(Products);

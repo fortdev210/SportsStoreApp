@@ -272,6 +272,7 @@ const Users = () => {
                                 error="wrong"
                                 success="right"
                                 onChange={e => onChange(e)}
+                                required
                             />
                             {
                                 is_admin?
@@ -293,6 +294,7 @@ const Users = () => {
                                 error="wrong"
                                 success="right"
                                 onChange={e => onChange(e)}
+                                required
                             />
                             <MDBInput
                                 label="User password"
@@ -303,6 +305,7 @@ const Users = () => {
                                 value={password}
                                 validate
                                 onChange={e => onChange(e)}
+                                required
                             />
                             <MDBInput
                                 label="Confirm password"
@@ -313,6 +316,7 @@ const Users = () => {
                                 value={password2}
                                 validate
                                 onChange={e => onChange(e)}
+                                required
                             />
                         </div>
                     </form>
